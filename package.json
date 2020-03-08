@@ -4,7 +4,7 @@
   "description": "Webcomponent for documentation creation",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "start": "npx parcel start ./example/index.html",
     "clean": "rm -rf docs dist && mkdir docs",
     "build": "npm run clean && npx parcel build ./example/index.html --experimental-scope-hoisting --public-url docs-webcomponent && cp ./dist/* docs && cp ./docs/index.html ./docs/404.html",
@@ -30,13 +30,11 @@
   ],
   "homepage": "https://github.com/Stradivario/docs-webcomponent#readme",
   "dependencies": {
+    "@rhtml/components": "^0.0.24",
+    "@rhtml/operators": "^0.0.24",
+    "@rhtml/renderer": "^0.0.24",
     "@rxdi/lit-html": "^0.7.42",
-    "@rhtml/components": "^0.0.22",
-    "@rhtml/operators": "^0.0.22",
-    "@rhtml/renderer": "^0.0.22",
-    "@rxdi/ui-kit": "^0.7.52",
-    "@rxdi/router": "^0.7.40",
-    "typescript": "^3.8.3"
+    "@rxdi/router": "^0.7.40"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.10.0",
@@ -47,6 +45,7 @@
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^5.0.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
   }
 }
