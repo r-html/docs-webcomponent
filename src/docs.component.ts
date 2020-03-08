@@ -17,6 +17,7 @@ export interface DocItem {
   path?: string;
   children?: DocItem[];
   disabled?: boolean;
+  component?: Function | Promise<Function>;
 }
 
 interface ISubmenuState {
@@ -47,7 +48,7 @@ type ISubmenuSetState = (s: ISubmenuState) => void;
       font-family: 'Roboto', sans-serif;
       background-color: #23272c;
       overflow: visible;
-      display: flex
+      display: flex;
     }
 
     .main::-webkit-scrollbar {
@@ -100,32 +101,47 @@ type ISubmenuSetState = (s: ISubmenuState) => void;
                               margin: 10px 0;
                               transition: all 200ms cubic-bezier(0.7, 0, 0.3, 1);
                             }
+                            * {
+                              outline: none;
+                            }
                             .active,
                             :hover {
+                              color: #37a5bc;
+                            }
+                            .hover:hover {
                               color: #37a5bc;
                             }
                             ul {
                               margin: 10px 0 15px -20px;
                             }
                           </style>
-                          <h3
-                            @click=${() =>
-                              setState({
-                                item,
-                                submenuHidden: !item.disabled
-                                  ? !submenuHidden
-                                  : false
+                          <router-link .path=${item.path}>
+                            <h3
+                              @click=${() =>
+                                setState({
+                                  item,
+                                  submenuHidden: !item.disabled
+                                    ? !submenuHidden
+                                    : false
+                                })}
+                              class=${classMap({
+                                hover: true,
+                                active: submenuHidden
                               })}
-                            class=${classMap({ active: submenuHidden })}
-                          >
-                            ${i.title}
-                          </h3>
+                            >
+                              ${i.title}
+                            </h3>
+                          </router-link>
                           ${submenuHidden && !item.disabled
                             ? html`
                                 <ul class=${classMap({ submenuHidden })}>
                                   <rx-animation
                                     overflow="hidden"
-                                    .options=${this.options}
+                                    .options=${() => ({
+                                      duration: 200,
+                                      translateX: 0,
+                                      easing: 'easeInOutSine'
+                                    })}
                                   >
                                     <r-for .of=${item.children || []}>
                                       <r-let
@@ -191,9 +207,22 @@ export class DocsComponent extends LitElement {
 
   @property({ type: Array })
   items: DocItem[] = [];
-  private options = () => ({
-    duration: 200,
-    translateX: 0,
-    easing: 'easeInOutSine'
-  });
+
+  async OnUpdateFirst() {
+    this.slots = this.filterUniqueSlots([
+      ...this.items.filter(i => i.path),
+      ...[]
+        .concat(...this.items.map(s => s.children).filter(i => i))
+        .filter(i => i.path)
+    ]);
+  }
+
+  private filterUniqueSlots = (slots: IRoute[]) =>
+    slots.reduce(
+      (acc, current) =>
+        acc.find(item => item.path === current.path)
+          ? acc
+          : acc.concat([current]),
+      []
+    );
 }
