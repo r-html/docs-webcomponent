@@ -1,8 +1,9 @@
+import '../src/index';
+
 import { Component, html, LitElement } from '@rxdi/lit-html';
 import { render } from '@rxdi/lit-html';
 
-import { DocItem } from '../src/index';
-import '../src/index';
+import { IDocItem } from '../src/index';
 
 @Component({
   selector: 'home-component',
@@ -99,7 +100,7 @@ render(
           title: 'FAQ',
           children: [{ title: 'And so on', path: '/docs-webcomponent/about' }]
         }
-      ] as DocItem[]}
+      ] as IDocItem[]}
     ></r-docs>
   `,
   document.body

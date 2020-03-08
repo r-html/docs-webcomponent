@@ -7,7 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx parcel start ./example/index.html",
     "clean": "rm -rf docs dist && mkdir docs",
-    "build": "npm run clean && npx parcel build ./example/index.html --experimental-scope-hoisting --public-url docs-webcomponent && cp ./dist/* docs && cp ./docs/index.html ./docs/404.html"
+    "build": "npm run clean && npx parcel build ./example/index.html --experimental-scope-hoisting --public-url docs-webcomponent && cp ./dist/* docs && cp ./docs/index.html ./docs/404.html",
+    "lint": "npx eslint . --ext .ts",
+    "lint-fix": "npx eslint . --fix --ext .ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
   },
   "repository": {
     "type": "git",
@@ -32,6 +39,14 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
-    "cssnano": "^4.1.10"
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "cssnano": "^4.1.10",
+    "eslint": "^6.7.2",
+    "husky": "^4.2.3",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-simple-import-sort": "^5.0.0",
+    "prettier": "^1.19.1"
   }
 }

@@ -1,27 +1,28 @@
-import {
-  Component,
-  LitElement,
-  html,
-  css,
-  classMap,
-  property
-} from '@rxdi/lit-html';
 import '@rxdi/router/slot';
-import { IRoute } from '@rxdi/router/slot/index';
 import '@rhtml/operators';
 import '@rhtml/components';
 
-export interface DocItem {
+import {
+  classMap,
+  Component,
+  css,
+  html,
+  LitElement,
+  property
+} from '@rxdi/lit-html';
+import { IRoute } from '@rxdi/router/slot/index';
+
+export interface IDocItem {
   title: string;
   active?: boolean;
   path?: string;
-  children?: DocItem[];
+  children?: IDocItem[];
   disabled?: boolean;
   component?: Function | Promise<Function>;
 }
 
 interface ISubmenuState {
-  item: DocItem;
+  item: IDocItem;
   submenuHidden: boolean;
 }
 type ISubmenuSetState = (s: ISubmenuState) => void;
@@ -77,7 +78,7 @@ type ISubmenuSetState = (s: ISubmenuState) => void;
           <div class="menu">
             <r-for .of=${this.items}>
               <r-let
-                .item=${(i: DocItem) => html`
+                .item=${(i: IDocItem) => html`
                   <r-part>
                     <r-state
                       .value=${{ item: i, submenuHidden: i.active }}
@@ -206,7 +207,7 @@ export class DocsComponent extends LitElement {
   slots: IRoute[] = [];
 
   @property({ type: Array })
-  items: DocItem[] = [];
+  items: IDocItem[] = [];
 
   async OnUpdateFirst() {
     this.slots = this.filterUniqueSlots([
