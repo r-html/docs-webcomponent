@@ -25,16 +25,6 @@ export class HomeComponent extends LitElement {}
 })
 export class AboutComponent extends LitElement {}
 
-@Component({
-  selector: 'pesho-component',
-  template(this: PeshoComponent) {
-    return html`
-      Pesho
-    `;
-  }
-})
-export class PeshoComponent extends LitElement {}
-
 render(
   html`
     <r-docs
@@ -54,13 +44,29 @@ render(
             {
               title: 'Pesho',
               path: '/docs-webcomponent/pesho',
-              component: async () => PeshoComponent
+              component: async () =>
+                (await import('./pesho.component')).PeshoComponent
             }
           ]
         },
         {
           title: 'Fundamentals',
-          children: [{ title: 'First steps', path: '/docs-webcomponent/about' }]
+          children: [
+            {
+              title: 'First steps',
+              path: '/docs-webcomponent/about2',
+              component: () => {
+                const el = document.createElement('div');
+                render(
+                  html`
+                    My documentation page
+                  `,
+                  el
+                );
+                return el;
+              }
+            }
+          ]
         },
         {
           title: 'Techniques',

@@ -1,11 +1,14 @@
 {
   "editor.formatOnSave": true,
   "[javascript]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
   "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
     "editor.formatOnSave": false
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.codeActionsOnSave": { "source.fixAll": true }
+  "editor.codeActionsOnSave": { "source.fixAll": false }
 }
