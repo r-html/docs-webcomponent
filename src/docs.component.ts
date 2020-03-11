@@ -116,7 +116,7 @@ type ISubmenuSetState = (s: ISubmenuState) => void;
                               margin: 10px 0 15px -20px;
                             }
                           </style>
-                          <router-link .path=${item.path}>
+                          <router-link .path=${item.path || ''}>
                             <h3
                               @click=${() =>
                                 setState({
@@ -210,20 +210,21 @@ export class DocsComponent extends LitElement {
   items: IDocItem[] = [];
 
   async OnUpdateFirst() {
-    this.slots = this.filterUniqueSlots([
-      ...this.items.filter(i => i.path),
-      ...[]
-        .concat(...this.items.map(s => s.children).filter(i => i))
-        .filter(i => i.path)
-    ]);
+    this.slots = this.filterUniqueSlots(
+      this.items.concat(
+        [].concat(...this.items.filter(s => s.children).map(i => i.children))
+      )
+    );
   }
 
-  private filterUniqueSlots = (slots: IRoute[]) =>
-    slots.reduce(
-      (acc, current) =>
-        acc.find(item => item.path === current.path)
-          ? acc
-          : acc.concat([current]),
-      []
-    );
+  private filterUniqueSlots = (slots: IDocItem[]) =>
+    slots
+      .filter(i => i && i.path)
+      .reduce(
+        (acc, current) =>
+          acc.find(item => item.path === current.path)
+            ? acc
+            : acc.concat([current]),
+        []
+      );
 }
